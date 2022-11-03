@@ -16,6 +16,7 @@
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>1.8</java.version>
+		<scala.binary.version>2.13</scala.binary.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -82,6 +83,21 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.typesafe.akka/akka-actor-testkit-typed -->
+		<dependency>
+			<groupId>com.typesafe.akka</groupId>
+			<artifactId>akka-actor-testkit-typed_2.13</artifactId>
+			<version>2.6.17</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/com.typesafe.akka/akka-actor-typed -->
+		<dependency>
+			<groupId>com.typesafe.akka</groupId>
+			<artifactId>akka-actor-typed_2.13</artifactId>
+			<version>2.6.17</version>
+		</dependency>
+
 
 		<dependency>
 			<groupId>org.springframework</groupId>
