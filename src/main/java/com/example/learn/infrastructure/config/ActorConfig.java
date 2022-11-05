@@ -3,6 +3,8 @@ package com.example.learn.infrastructure.config;
 
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -19,17 +21,30 @@ public class ActorConfig {
     private ApplicationContext applicationContext;
 
     @Bean
+    public Config akkaConfig(){
+        return ConfigFactory.load();
+    }
+
+    @Bean
     public ActorSystem actorSystem() {
-        ActorSystem system = ActorSystem.create("akka-spring-demo");
+        ActorSystem system = ActorSystem.create("akka-spring-demo", akkaConfig());
         SPRING_EXTENSION_PROVIDER.get(system)
                 .initialize(applicationContext);
         return system;
     }
-    @Bean
+    @Bean(name = "greetingActor1")
     public ActorRef create(){
         ActorSystem actorSystem = actorSystem();
         ActorRef greeter = actorSystem.actorOf(SPRING_EXTENSION_PROVIDER.get(actorSystem)
                 .props("greetingActor"), "greeter");
         return greeter;
+    }
+
+    @Bean(name = "testActor1")
+    public ActorRef create1(){
+        ActorSystem actorSystem = actorSystem();
+        ActorRef testActor = actorSystem.actorOf(SPRING_EXTENSION_PROVIDER.get(actorSystem)
+                .props("testActor"), "testActor");
+        return testActor;
     }
 }
