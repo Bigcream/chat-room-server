@@ -40,11 +40,11 @@ public class ActorConfig {
         return greeter;
     }
 
-    @Bean(name = "testActor1")
+    @Bean(name = "userActor1")
     public ActorRef create1(){
         ActorSystem actorSystem = actorSystem();
         ActorRef testActor = actorSystem.actorOf(SPRING_EXTENSION_PROVIDER.get(actorSystem)
-                .props("testActor"), "testActor");
+                .props("userActor"), "userActor");
         return testActor;
     }
 }

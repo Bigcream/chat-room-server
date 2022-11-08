@@ -2,52 +2,50 @@ package com.example.learn.user_interface;
 
 
 import akka.actor.ActorRef;
+import akka.actor.ActorSystem;
 import akka.pattern.Patterns;
-import com.example.learn.domain.actor.GreetingActor;
-import com.example.learn.domain.actor.TestActor;
+import com.example.learn.infrastructure.UtilityActor;
 import com.example.learn.infrastructure.database.dto.ChatMessage;
 import com.example.learn.infrastructure.database.dto.Message;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.time.Duration;
 
-@Controller
+@RestController
 public class ChatController {
 
     @Autowired
     @Qualifier("greetingActor1")
     private ActorRef greetingActor1;
-
     @Autowired
-    @Qualifier("testActor1")
-    private ActorRef testActor1;
+    @Qualifier("userActor1")
+    private ActorRef userActor1;
+    @Autowired
+    private ActorSystem actorSystem;
 
     @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
 
     @MessageMapping("/message")
-    @SendTo("/chatroom/public")
-    public Message receiveMessage(@Payload Message message){
-        testActor1.tell(new TestActor.Greet("john public"), testActor1);
-        System.out.println("test"+testActor1.path());
-        return message;
+    public Message receiveMessage(@Payload Message message) throws Exception {
+        userActor1.tell(new ChatMessage(message), userActor1);
+        String actorPath = "akka://akka-spring-demo/user/" + message.getSenderName();
+        ActorRef userActor = UtilityActor.getInstanceOfActor(message.getSenderName(), actorSystem);
+        simpMessagingTemplate.convertAndSend("/chatroom/public", UtilityActor.ask(userActor, new ChatMessage(message), Message.class));
+        System.out.println("test "+userActor.path());
+        return new Message();
     }
 
     @MessageMapping("/private-message")
     public Message recMessage(@Payload Message message){
         simpMessagingTemplate.convertAndSendToUser(message.getReceiverName(),"/private",message);
         System.out.println("greeting " + greetingActor1.path());
-        return ask(greetingActor1, new ChatMessage(message), Message.class);
-    }
-    private <T> T ask(ActorRef actor, Object msg, Class<T> returnTypeClass){
-        return  (T) Patterns.ask(actor, msg, Duration.ofMillis(2000)).toCompletableFuture().join();
+        return UtilityActor.ask(greetingActor1, new ChatMessage(message), Message.class);
     }
 
 }

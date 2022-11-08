@@ -15,13 +15,14 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @Slf4j
-public class ChatRoomActor extends AbstractActor {
+public class UserActor extends AbstractActor {
     private ActorRef sender;
     private final GreetingService greetingService;
 
-    public ChatRoomActor(GreetingService greetingService) {
+    public UserActor(GreetingService greetingService) {
         this.greetingService = greetingService;
     }
+
 
     @Override
     public Receive createReceive() {
@@ -37,4 +38,3 @@ public class ChatRoomActor extends AbstractActor {
         return msg.getMessage();
     }
 }
-
