@@ -2,8 +2,10 @@ package com.example.learn.user_interface;
 
 
 import akka.actor.ActorRef;
+import akka.pattern.Patterns;
 import com.example.learn.domain.actor.GreetingActor;
 import com.example.learn.domain.actor.TestActor;
+import com.example.learn.infrastructure.database.dto.ChatMessage;
 import com.example.learn.infrastructure.database.dto.Message;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,8 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+
+import java.time.Duration;
 
 @Controller
 public class ChatController {
@@ -38,9 +42,12 @@ public class ChatController {
 
     @MessageMapping("/private-message")
     public Message recMessage(@Payload Message message){
-        greetingActor1.tell(new GreetingActor.Greet("john private"), greetingActor1);
         simpMessagingTemplate.convertAndSendToUser(message.getReceiverName(),"/private",message);
         System.out.println("greeting " + greetingActor1.path());
-        return message;
+        return ask(greetingActor1, new ChatMessage(message), Message.class);
     }
+    private <T> T ask(ActorRef actor, Object msg, Class<T> returnTypeClass){
+        return  (T) Patterns.ask(actor, msg, Duration.ofMillis(2000)).toCompletableFuture().join();
+    }
+
 }
