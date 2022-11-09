@@ -3,7 +3,8 @@ package com.example.learn.user_interface;
 
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
-import akka.pattern.Patterns;
+import com.example.learn.application.ChatRoomService;
+import com.example.learn.application.UserService;
 import com.example.learn.infrastructure.UtilityActor;
 import com.example.learn.infrastructure.database.dto.ChatMessage;
 import com.example.learn.infrastructure.database.dto.Message;
@@ -13,8 +14,6 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.time.Duration;
 
 @RestController
 public class ChatController {
@@ -27,18 +26,30 @@ public class ChatController {
     private ActorRef userActor1;
     @Autowired
     private ActorSystem actorSystem;
+    @Autowired
+    private ChatRoomService chatRoomService;
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
 
     @MessageMapping("/message")
     public Message receiveMessage(@Payload Message message) throws Exception {
-        userActor1.tell(new ChatMessage(message), userActor1);
-        String actorPath = "akka://akka-spring-demo/user/" + message.getSenderName();
-        ActorRef userActor = UtilityActor.getInstanceOfActor(message.getSenderName(), actorSystem);
-        simpMessagingTemplate.convertAndSend("/chatroom/public", UtilityActor.ask(userActor, new ChatMessage(message), Message.class));
-        System.out.println("test "+userActor.path());
-        return new Message();
+        userService.sendPublicChat(message);
+        return message;
+    }
+
+    @MessageMapping("/join-room")
+    public Message userJoinRoom(@Payload Message message) throws Exception {
+        userService.joinRoom(message);
+        return message;
+    }
+
+    @MessageMapping("/create-room")
+    public Message userCreateRoom(@Payload Message message) throws Exception {
+        chatRoomService.createRoom(message);
+        return message;
     }
 
     @MessageMapping("/private-message")

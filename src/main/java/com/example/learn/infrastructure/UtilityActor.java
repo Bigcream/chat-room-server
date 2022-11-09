@@ -14,7 +14,7 @@ import static com.example.learn.domain.actor.SpringExtension.SPRING_EXTENSION_PR
 
 public class UtilityActor {
 
-    public static ActorRef getInstanceOfActor(String name, ActorSystem actorSystem) throws Exception {
+    public static ActorRef getInstanceOfActor(String name, ActorSystem actorSystem, String actorName) throws Exception {
         ActorRef instanceOfActor;
         ActorSelection sel = actorSystem.actorSelection("akka://akka-spring-demo/user/" + name);
         AskableActorSelection asker = new AskableActorSelection(sel);
@@ -25,7 +25,7 @@ public class UtilityActor {
         // Actor exists
         // Actor does not exits
         instanceOfActor = reference.orElseGet(() -> actorSystem.actorOf(SPRING_EXTENSION_PROVIDER.get(actorSystem)
-                .props("userActor"), name));
+                .props(actorName), name));
         return instanceOfActor;
     }
 

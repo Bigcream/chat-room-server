@@ -3,5 +3,6 @@ package com.example.learn.infrastructure.database.dto;
 public enum Status {
     JOIN,
     MESSAGE,
-    LEAVE
+    LEAVE,
+    CREATE_ROOM
 }
