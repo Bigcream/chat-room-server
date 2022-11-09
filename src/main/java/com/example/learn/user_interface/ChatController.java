@@ -4,9 +4,7 @@ package com.example.learn.user_interface;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import com.example.learn.application.ChatRoomService;
-import com.example.learn.application.UserService;
-import com.example.learn.infrastructure.UtilityActor;
-import com.example.learn.infrastructure.database.dto.ChatMessage;
+import com.example.learn.application.UserChatService;
 import com.example.learn.infrastructure.database.dto.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -29,20 +27,20 @@ public class ChatController {
     @Autowired
     private ChatRoomService chatRoomService;
     @Autowired
-    private UserService userService;
+    private UserChatService userChatService;
 
     @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
 
     @MessageMapping("/message")
     public Message receiveMessage(@Payload Message message) throws Exception {
-        userService.sendPublicChat(message);
+        userChatService.sendPublicChat(message);
         return message;
     }
 
     @MessageMapping("/join-room")
     public Message userJoinRoom(@Payload Message message) throws Exception {
-        userService.joinRoom(message);
+        userChatService.joinRoom(message);
         return message;
     }
 
@@ -53,10 +51,9 @@ public class ChatController {
     }
 
     @MessageMapping("/private-message")
-    public Message recMessage(@Payload Message message){
-        simpMessagingTemplate.convertAndSendToUser(message.getReceiverName(),"/private",message);
-        System.out.println("greeting " + greetingActor1.path());
-        return UtilityActor.ask(greetingActor1, new ChatMessage(message), Message.class);
+    public Message recMessage(@Payload Message message) throws Exception {
+        userChatService.sendPrivateChat(message);
+        return message;
     }
 
 }

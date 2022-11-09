@@ -23,11 +23,9 @@ public class UserActor extends AbstractActor {
     private final GreetingService greetingService;
     @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
-
     public UserActor(GreetingService greetingService) {
         this.greetingService = greetingService;
     }
-
 
     @Override
     public Receive createReceive() {
@@ -37,10 +35,21 @@ public class UserActor extends AbstractActor {
                     Message response = chat(msg);
                     sender.tell(response, self());
                 })
+                .match(ChatRoom.sendPrivateMessage.class, msg ->{
+                    sender = sender();
+                    Message response = sendToUser(msg.message);
+                    sender.tell(response, self());
+                })
                 .build();
     }
     private Message chat(ChatMessage msg) {
         simpMessagingTemplate.convertAndSend("/chatroom/public", msg.getMessage());
         return msg.getMessage();
+    }
+
+    private Message sendToUser(Message msg) {
+        simpMessagingTemplate.convertAndSendToUser(msg.getReceiverName(),"/private",msg);
+        System.out.println("sender private " + sender.path());
+        return msg;
     }
 }
