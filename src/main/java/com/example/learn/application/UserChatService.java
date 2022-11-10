@@ -1,5 +1,4 @@
 package com.example.learn.application;
-
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import com.example.learn.domain.actor.ChatRoom;
@@ -9,7 +8,6 @@ import com.example.learn.infrastructure.database.dto.ChatMessage;
 import com.example.learn.infrastructure.database.dto.Message;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
 @Service
 @AllArgsConstructor
 public class UserChatService {
