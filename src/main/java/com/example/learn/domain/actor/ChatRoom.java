@@ -4,9 +4,9 @@ import com.example.learn.infrastructure.database.dto.Message;
 
 public class ChatRoom {
     public static final class GetSession {}
-    public static final class sendPrivateMessage  {
+    public static final class sendPrivateChat {
         public final Message message;
-        public sendPrivateMessage(Message message) {
+        public sendPrivateChat(Message message) {
             this.message = message;
         }
     }

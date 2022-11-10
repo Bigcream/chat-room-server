@@ -2,10 +2,8 @@ package com.example.learn.domain.actor;
 
 import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
-import akka.actor.UntypedActor;
 import akka.japi.pf.ReceiveBuilder;
 import com.example.learn.application.GreetingService;
-import com.example.learn.infrastructure.UtilityActor;
 import com.example.learn.infrastructure.database.dto.ChatMessage;
 import com.example.learn.infrastructure.database.dto.Message;
 import lombok.extern.slf4j.Slf4j;
@@ -35,10 +33,9 @@ public class UserActor extends AbstractActor {
                     Message response = chat(msg);
                     sender.tell(response, self());
                 })
-                .match(ChatRoom.sendPrivateMessage.class, msg ->{
+                .match(ChatRoom.sendPrivateChat.class, msg ->{
                     sender = sender();
                     Message response = sendToUser(msg.message);
-                    sender.tell(response, self());
                 })
                 .build();
     }
