@@ -27,6 +27,5 @@ public class UserChatService {
     public void sendPrivateChat(Message message) throws Exception{
         ActorRef userActor = UtilityActor.getInstanceOfActor(message.getSenderName(), actorSystem, ActorName.USER_ACTOR);
         userActor.tell(new ChatRoom.sendPrivateChat(message), userActor);
-
     }
 }
