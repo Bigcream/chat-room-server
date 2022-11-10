@@ -28,7 +28,6 @@ public class ChatController {
         userChatService.joinRoom(message);
         return message;
     }
-
     @MessageMapping("/create-room")
     public Message userCreateRoom(@Payload Message message) throws Exception {
         chatRoomService.createRoom(message);
