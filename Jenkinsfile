@@ -19,19 +19,13 @@ pipeline {
         withCredentials([usernamePassword(credentialsId: 'docker-hub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
             bat "docker push ${DOCKER_IMAGE}:${DOCKER_TAG}"
             bat "docker push ${DOCKER_IMAGE}:latest"
+            bat "docker pull redis:latest"
+            bat "docker run -p 6379:6379 redis"
         }
 
         //clean to save disk
         bat "docker image rm ${DOCKER_IMAGE}:${DOCKER_TAG}"
         bat "docker image rm ${DOCKER_IMAGE}:latest"
-      }
-    }
-    stage("ssh-server") {
-      agent any
-      steps {
-        sshagent(['ssh_remote']) {
-            bat 'ssh -o StrictHostKeyChecking=no -l Admin 127.0.0.1 docker ps'
-        }
       }
     }
   }
