@@ -1,6 +1,7 @@
 package com.example.learn.user_interface;
 
 import com.example.learn.application.UserServiceTest;
+import com.example.learn.infrastructure.database.dto.UserDTO;
 import com.example.learn.infrastructure.database.entity.UserEntity;
 
 import com.example.learn.infrastructure.security.CustomUserDetails;
@@ -33,7 +34,7 @@ public class HomeController {
         return ResponseEntity.ok(userEntities);
     }
     @PostMapping("/login")
-    public ResponseEntity<String> authenticateUser( @RequestBody UserEntity user) {
+    public ResponseEntity<String> authenticateUser(@RequestBody UserEntity user) {
 //         Xác thực từ username và password.
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -46,11 +47,18 @@ public class HomeController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 //         Trả về jwt cho người dùng.
         String jwt = tokenProvider.generateToken((CustomUserDetails) authentication.getPrincipal());
+        UserDTO userDTO = UserDTO.builder().username(user.getUsername()).lastName(user.getUsername()).firstName(user.getUsername()).id(1L).email("bigcream@gmail.com").build();
         return ResponseEntity.ok(jwt);
     }
     // Api /api/random yêu cầu phải xác thực mới có thể request
     @GetMapping("/random")
     public ResponseEntity<String> randomStuff(){
         return ResponseEntity.ok("test.get()");
+    }
+
+    @GetMapping("/auth/status")
+    public ResponseEntity<UserDTO> getAuth(){
+        UserDTO userDTO = UserDTO.builder().username("bigcream").lastName("big").firstName("cream").id(1L).email("bigcream@gmail.com").build();
+        return ResponseEntity.ok(userDTO);
     }
 }

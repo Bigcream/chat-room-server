@@ -1,12 +1,17 @@
-package com.example.learn.domain.actor;
+package com.example.learn.domain.chatroom;
 
 import com.example.learn.infrastructure.database.dto.Message;
 
 public class ChatRoom {
-    public static final class GetSession {}
-    public static final class sendPrivateChat {
+    public static final class CreateRoom {
         public final Message message;
-        public sendPrivateChat(Message message) {
+        public CreateRoom(Message message) {
+            this.message = message;
+        }
+    }
+    public static final class SendPrivateChat {
+        public final Message message;
+        public SendPrivateChat(Message message) {
             this.message = message;
         }
     }

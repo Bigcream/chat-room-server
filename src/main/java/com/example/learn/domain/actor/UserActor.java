@@ -4,6 +4,7 @@ import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
 import akka.japi.pf.ReceiveBuilder;
 import com.example.learn.application.GreetingService;
+import com.example.learn.domain.chatroom.ChatRoom;
 import com.example.learn.infrastructure.database.dto.ChatMessage;
 import com.example.learn.infrastructure.database.dto.Message;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +34,7 @@ public class UserActor extends AbstractActor {
                     Message response = chat(msg);
                     sender.tell(response, self());
                 })
-                .match(ChatRoom.sendPrivateChat.class, msg ->{
+                .match(ChatRoom.SendPrivateChat.class, msg ->{
                     sender = sender();
                     Message response = sendToUser(msg.message);
                 })

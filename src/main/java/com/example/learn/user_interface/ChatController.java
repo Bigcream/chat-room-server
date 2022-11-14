@@ -27,9 +27,8 @@ public class ChatController {
         return message;
     }
     @MessageMapping("/create-room")
-    public Message userCreateRoom(@Payload Message message) throws Exception {
-        chatRoomService.createRoom(message);
-        return message;
+    public String userCreateRoom(@Payload Message message) throws Exception {
+        return chatRoomService.createRoom(message);
     }
 
     @MessageMapping("/private-message")

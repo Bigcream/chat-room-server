@@ -1,7 +1,7 @@
 package com.example.learn.application;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
-import com.example.learn.domain.actor.ChatRoom;
+import com.example.learn.domain.chatroom.ChatRoom;
 import com.example.learn.infrastructure.UtilityActor;
 import com.example.learn.infrastructure.constant.ActorName;
 import com.example.learn.infrastructure.database.dto.ChatMessage;
@@ -24,6 +24,6 @@ public class UserChatService {
     }
     public void sendPrivateChat(Message message) throws Exception{
         ActorRef userActor = UtilityActor.getInstanceOfActor(message.getSenderName(), actorSystem, ActorName.USER_ACTOR);
-        userActor.tell(new ChatRoom.sendPrivateChat(message), userActor);
+        userActor.tell(new ChatRoom.SendPrivateChat(message), userActor);
     }
 }
