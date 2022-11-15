@@ -44,7 +44,6 @@ public class ChatController extends BaseController {
         userChatService.sendPrivateChat(message);
         return message;
     }
-
     @GetMapping("/room-available")
     public List<ChatRoomDTO> getAllRoomAvailable(){
         return chatRoomService.getAllRoomAvailable();

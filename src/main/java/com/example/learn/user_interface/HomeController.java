@@ -47,7 +47,8 @@ public class HomeController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 //         Trả về jwt cho người dùng.
         String jwt = tokenProvider.generateToken((CustomUserDetails) authentication.getPrincipal());
-        UserDTO userDTO = UserDTO.builder().username(user.getUsername()).lastName(user.getUsername()).firstName(user.getUsername()).id(1L).email("bigcream@gmail.com").build();
+//        UserDTO userDTO = UserDTO.builder().username(user.getUsername()).lastName(user.getUsername()).firstName(user.getUsername()).id(1L).email("bigcream@gmail.com").build();
+//        userDTO.setPassWord("123456");
         return ResponseEntity.ok(jwt);
     }
     // Api /api/random yêu cầu phải xác thực mới có thể request
