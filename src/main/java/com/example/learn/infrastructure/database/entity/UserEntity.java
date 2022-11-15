@@ -45,4 +45,8 @@ public class UserEntity  implements Serializable {
     )
     private Set<RoleEntity> roles;
 
+    @ManyToOne
+    @JoinColumn(name = "chat_id")
+    private ChatRoomEntity chatRoom;
+
 }

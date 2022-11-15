@@ -1,6 +1,7 @@
 package com.example.learn.infrastructure.database.entity;
 
 
+import com.example.learn.infrastructure.database.dto.ChatRoomDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,7 +26,6 @@ public class ChatRoomEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -41,5 +41,15 @@ public class ChatRoomEntity implements Serializable {
     @Column(name = "created_at")
     private Timestamp createdAt;
 
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "chatRoom")
+    private Set<UserEntity> users;
 
+    public ChatRoomDTO convertToDTO(){
+        return ChatRoomDTO.builder()
+                .chatRoomId(this.getChatRoomId())
+                .createBy(this.getCreatedBy())
+                .userInRooms(this.getUsers())
+                .build();
+    }
 }

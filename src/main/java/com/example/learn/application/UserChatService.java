@@ -5,13 +5,23 @@ import com.example.learn.domain.chatroom.ChatRoom;
 import com.example.learn.infrastructure.UtilityActor;
 import com.example.learn.infrastructure.constant.ActorName;
 import com.example.learn.infrastructure.database.dto.ChatMessage;
+import com.example.learn.infrastructure.database.dto.ChatRoomDTO;
 import com.example.learn.infrastructure.database.dto.Message;
+import com.example.learn.infrastructure.database.entity.ChatRoomEntity;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class UserChatService {
     private final ActorSystem actorSystem;
+    @Autowired
+    private HashMap<Long, List<ChatRoomEntity>> chatRoomMap;
     public void joinRoom(Message message) throws Exception {
         ActorRef userActor = UtilityActor.getInstanceOfActor(message.getSenderName(), actorSystem, ActorName.USER_ACTOR);
         userActor.tell(new ChatMessage(message), userActor);
