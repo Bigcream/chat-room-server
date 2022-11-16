@@ -6,6 +6,7 @@ import com.example.learn.infrastructure.security.jwt.JwtAuthenticationEntryPoint
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -55,16 +56,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         // We don't need CSRF for this example
-        httpSecurity.csrf().disable()
+        httpSecurity.cors().and()
                 // dont authenticate this particular request
-                .authorizeRequests().antMatchers("/ws/**").permitAll().
-                and().authorizeRequests().antMatchers("/api/v1/**").permitAll().
+                .authorizeRequests().antMatchers("/ws/**").permitAll().and()
+                .authorizeRequests().antMatchers("/api/v1/**").permitAll().
                 // all other requests need to be authenticated
-                        anyRequest().authenticated().and().
-                // make sure we use stateless session; session won't be used to
-                // store user's state.
-                        exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                        anyRequest().authenticated();
 
         // Add a filter to validate the tokens with every request
         httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
