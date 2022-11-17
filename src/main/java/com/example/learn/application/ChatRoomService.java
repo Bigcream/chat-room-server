@@ -11,6 +11,8 @@ import com.example.learn.infrastructure.database.entity.ChatRoomEntity;
 import com.example.learn.infrastructure.database.entity.UserEntity;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.user.SimpUser;
+import org.springframework.messaging.simp.user.SimpUserRegistry;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -21,6 +23,9 @@ public class ChatRoomService {
     private final ActorSystem actorSystem;
     @Autowired
     private HashMap<Long, List<ChatRoomEntity>> chatRoomMap;
+
+    @Autowired
+    private SimpUserRegistry simpUserRegistry;
 
     public String createRoom(Message message) throws Exception {
         message.setRoomId(genChatRoomId(message.getSenderName()));
@@ -69,5 +74,12 @@ public class ChatRoomService {
             }
         });
         return null;
+    }
+    public List<String> getAllUser(){
+        List<String> usernames = new ArrayList<>();
+        System.out.println(simpUserRegistry.getUserCount());
+        Set<SimpUser> simpUsers = simpUserRegistry.getUsers();
+        simpUsers.forEach(simpUser -> usernames.add(simpUser.getName()));
+        return usernames;
     }
 }

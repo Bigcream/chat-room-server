@@ -5,15 +5,24 @@ import com.example.learn.application.ChatRoomService;
 import com.example.learn.application.UserChatService;
 import com.example.learn.infrastructure.database.dto.ChatRoomDTO;
 import com.example.learn.infrastructure.database.dto.Message;
+import com.example.learn.infrastructure.database.entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
+import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import javax.websocket.OnOpen;
+import javax.websocket.Session;
+import java.io.IOException;
+import java.security.Principal;
+import java.util.*;
+
+import static org.springframework.messaging.simp.SimpMessageHeaderAccessor.USER_HEADER;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -22,6 +31,27 @@ public class ChatController extends BaseController {
     private ChatRoomService chatRoomService;
     @Autowired
     private UserChatService userChatService;
+    static Set<Session> users = Collections.synchronizedSet(new HashSet<>());
+    @OnOpen
+    public void handleOpen(Session session) throws IOException {
+        session.getBasicRemote().sendText("You are connected as: " + session.getId());
+        System.out.println("You are connected as: " + session.getId());
+        users.add(session);
+        sendListUserOnline();
+    }
+
+    public void sendListUserOnline() throws IOException {
+        for (Session session : users) {
+            session.getBasicRemote().sendText(buildListUser());
+        }
+    }
+    public String buildListUser() {
+        StringBuffer listUser = new StringBuffer("list_user");
+        for (Session session : users) {
+            listUser.append(session.getId() + " \n");
+        }
+        return listUser.toString();
+    }
 
     @MessageMapping("/message")
     public Message receiveMessage(@Payload Message message) throws Exception {
@@ -30,7 +60,8 @@ public class ChatController extends BaseController {
     }
 
     @MessageMapping("/join-room")
-    public Message userJoinRoom(@Payload Message message) throws Exception {
+    public Message userJoinRoom(StompHeaderAccessor sha, @Payload Message message, Principal principal) throws Exception {
+        System.out.println("user: " + principal.getName());
         userChatService.joinRoom(message);
         return message;
     }
@@ -52,5 +83,9 @@ public class ChatController extends BaseController {
     public ResponseEntity<Void> leaveRoom(@PathVariable Long roomId, @RequestParam String username){
 
         return new  ResponseEntity<>(chatRoomService.leaveRoom(roomId, username), noCacheHeader, HttpStatus.OK);
+    }
+    @GetMapping("/get-all-user")
+    public ResponseEntity<List<String>> getAllUser(){
+        return new  ResponseEntity<>(chatRoomService.getAllUser(), noCacheHeader, HttpStatus.OK);
     }
 }
