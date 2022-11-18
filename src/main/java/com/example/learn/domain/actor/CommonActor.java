@@ -2,7 +2,6 @@ package com.example.learn.domain.actor;
 
 import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
-import akka.actor.UntypedActor;
 import akka.japi.pf.ReceiveBuilder;
 import com.example.learn.application.GreetingService;
 import com.example.learn.infrastructure.database.dto.ChatMessage;
@@ -15,11 +14,11 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @Slf4j
-public class GreetingActor extends AbstractActor {
+public class CommonActor extends AbstractActor {
     private ActorRef sender;
     private final GreetingService greetingService;
 
-    public GreetingActor(GreetingService greetingService) {
+    public CommonActor(GreetingService greetingService) {
         this.greetingService = greetingService;
     }
 

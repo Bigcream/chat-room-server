@@ -32,11 +32,11 @@ public class ActorConfig {
                 .initialize(applicationContext);
         return system;
     }
-    @Bean(name = "greetingActor1")
+    @Bean(name = "actorCommon")
     public ActorRef create(){
         ActorSystem actorSystem = actorSystem();
         ActorRef greeter = actorSystem.actorOf(SPRING_EXTENSION_PROVIDER.get(actorSystem)
-                .props("greetingActor"), "greeter");
+                .props("commonActor"), "greeter");
         return greeter;
     }
 
