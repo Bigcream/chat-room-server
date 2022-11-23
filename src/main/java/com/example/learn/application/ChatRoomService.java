@@ -10,6 +10,7 @@ import com.example.learn.infrastructure.database.dto.Message;
 import com.example.learn.infrastructure.database.entity.ChatRoomEntity;
 import com.example.learn.infrastructure.database.entity.UserEntity;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.user.SimpUser;
 import org.springframework.messaging.simp.user.SimpUserRegistry;
@@ -18,15 +19,10 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ChatRoomService {
     private final ActorSystem actorSystem;
-    @Autowired
-    private HashMap<Long, List<ChatRoomEntity>> chatRoomMap;
-
-    @Autowired
-    private SimpUserRegistry simpUserRegistry;
-
+    private final HashMap<Long, List<ChatRoomEntity>> chatRoomMap;
     public String createRoom(Message message) throws Exception {
         message.setRoomId(genChatRoomId(message.getSenderName()));
         ActorRef chatRoomActor = UtilityActor.getInstanceOfActor(message.getRoomId().toString(), actorSystem, ActorName.CHAT_ROOM_ACTOR);
@@ -58,13 +54,6 @@ public class ChatRoomService {
         }
         return (long) number;
     }
-    public List<ChatRoomDTO> getAllRoomAvailable(){
-        List<ChatRoomDTO> chatRoomDTOS = new ArrayList<>();
-        chatRoomMap.forEach((aLong, chatRoomEntities) -> chatRoomEntities.forEach(chatRoom ->{
-            chatRoomDTOS.add(chatRoom.convertToDTO());
-        }));
-        return chatRoomDTOS;
-    }
     public Void leaveRoom(Long roomId, String username){
         chatRoomMap.forEach((aLong, chatRoomEntities) -> {
             if(aLong.equals(roomId)){
@@ -74,12 +63,5 @@ public class ChatRoomService {
             }
         });
         return null;
-    }
-    public List<String> getAllUser(){
-        List<String> usernames = new ArrayList<>();
-        System.out.println(simpUserRegistry.getUserCount());
-        Set<SimpUser> simpUsers = simpUserRegistry.getUsers();
-        simpUsers.forEach(simpUser -> usernames.add(simpUser.getName()));
-        return usernames;
     }
 }

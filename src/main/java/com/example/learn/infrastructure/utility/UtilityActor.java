@@ -7,6 +7,8 @@ import akka.util.Timeout;
 import scala.concurrent.Await;
 import scala.concurrent.Future;
 import scala.concurrent.duration.Duration;
+
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
@@ -30,6 +32,10 @@ public class UtilityActor {
     }
 
     public static  <T> T ask(ActorRef actor, Object msg, Class<T> returnTypeClass){
+        return  (T) Patterns.ask(actor, msg, java.time.Duration.ofMillis(2000)).toCompletableFuture().join();
+    }
+
+    public static  <T> T askObject(ActorRef actor, Object msg, Object returnTypeClass){
         return  (T) Patterns.ask(actor, msg, java.time.Duration.ofMillis(2000)).toCompletableFuture().join();
     }
 

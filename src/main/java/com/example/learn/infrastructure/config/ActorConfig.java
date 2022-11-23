@@ -36,7 +36,7 @@ public class ActorConfig {
     public ActorRef create(){
         ActorSystem actorSystem = actorSystem();
         ActorRef greeter = actorSystem.actorOf(SPRING_EXTENSION_PROVIDER.get(actorSystem)
-                .props("commonActor"), "greeter");
+                .props("commonActor"), "actorCommon");
         return greeter;
     }
 

@@ -15,14 +15,8 @@ public class ChatRoom {
             this.message = message;
         }
     }
-    public static final class SessionGranted  {}
-    public static final class SessionDenied {
-        public final String reason;
-
-        public SessionDenied(String reason) {
-            this.reason = reason;
-        }
-    }
+    public static final class GetAllRoomAvailable  {}
+    public static final class GetAllUserOnline { }
     public static final class MessagePosted {
         public final String screenName;
         public final String message;
