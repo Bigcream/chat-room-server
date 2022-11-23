@@ -1,20 +1,18 @@
 package com.example.learn.user_interface;
 
-
 import akka.actor.ActorRef;
 import com.example.learn.application.ChatRoomService;
 import com.example.learn.application.UserChatService;
-import com.example.learn.domain.chatroom.ChatRoom;
-import com.example.learn.infrastructure.UtilityActor;
+import com.example.learn.domain.actor.chatroom.ChatRoom;
 import com.example.learn.infrastructure.database.dto.ChatRoomDTO;
 import com.example.learn.infrastructure.database.dto.Message;
+import com.example.learn.infrastructure.utility.UtilityActor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController

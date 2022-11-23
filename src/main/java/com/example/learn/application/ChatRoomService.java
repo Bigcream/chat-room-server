@@ -3,17 +3,12 @@ package com.example.learn.application;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import com.example.learn.domain.actor.chatroom.ChatRoom;
-import com.example.learn.infrastructure.utility.UtilityActor;
 import com.example.learn.infrastructure.constant.ActorName;
-import com.example.learn.infrastructure.database.dto.ChatRoomDTO;
 import com.example.learn.infrastructure.database.dto.Message;
 import com.example.learn.infrastructure.database.entity.ChatRoomEntity;
 import com.example.learn.infrastructure.database.entity.UserEntity;
-import lombok.AllArgsConstructor;
+import com.example.learn.infrastructure.utility.UtilityActor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.simp.user.SimpUser;
-import org.springframework.messaging.simp.user.SimpUserRegistry;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
