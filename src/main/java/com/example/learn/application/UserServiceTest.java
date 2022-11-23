@@ -1,12 +1,10 @@
 package com.example.learn.application;
 
-import com.example.learn.domain.user.IUserRepository;
+import com.example.learn.domain.api.user.IUserRepository;
 import com.example.learn.infrastructure.database.entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class UserServiceTest {

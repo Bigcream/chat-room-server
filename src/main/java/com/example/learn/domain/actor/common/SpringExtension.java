@@ -1,4 +1,4 @@
-package com.example.learn.domain.actor;
+package com.example.learn.domain.actor.common;
 
 import akka.actor.AbstractExtensionId;
 import akka.actor.ExtendedActorSystem;

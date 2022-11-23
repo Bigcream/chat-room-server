@@ -1,4 +1,4 @@
-package com.example.learn.infrastructure;
+package com.example.learn.infrastructure.utility;
 
 import akka.actor.*;
 import akka.pattern.AskableActorSelection;
@@ -10,7 +10,7 @@ import scala.concurrent.duration.Duration;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
-import static com.example.learn.domain.actor.SpringExtension.SPRING_EXTENSION_PROVIDER;
+import static com.example.learn.domain.actor.common.SpringExtension.SPRING_EXTENSION_PROVIDER;
 
 public class UtilityActor {
 

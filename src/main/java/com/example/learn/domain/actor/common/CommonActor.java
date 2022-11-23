@@ -1,30 +1,27 @@
-package com.example.learn.domain.actor;
+package com.example.learn.domain.actor.common;
 
 import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
 import akka.japi.pf.ReceiveBuilder;
 import com.example.learn.application.GreetingService;
-import com.example.learn.domain.chatroom.ChatRoom;
 import com.example.learn.infrastructure.database.dto.ChatMessage;
 import com.example.learn.infrastructure.database.dto.Message;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @Slf4j
-public class UserActor extends AbstractActor {
+public class CommonActor extends AbstractActor {
     private ActorRef sender;
     private final GreetingService greetingService;
-    @Autowired
-    private SimpMessagingTemplate simpMessagingTemplate;
-    public UserActor(GreetingService greetingService) {
+
+    public CommonActor(GreetingService greetingService) {
         this.greetingService = greetingService;
     }
+
 
     @Override
     public Receive createReceive() {
@@ -34,20 +31,9 @@ public class UserActor extends AbstractActor {
                     Message response = chat(msg);
                     sender.tell(response, self());
                 })
-                .match(ChatRoom.SendPrivateChat.class, msg ->{
-                    sender = sender();
-                    Message response = sendToUser(msg.message);
-                })
                 .build();
     }
     private Message chat(ChatMessage msg) {
-        simpMessagingTemplate.convertAndSend("/chatroom/public", msg.getMessage());
         return msg.getMessage();
-    }
-
-    private Message sendToUser(Message msg) {
-        simpMessagingTemplate.convertAndSendToUser(msg.getReceiverName(),"/private",msg);
-        System.out.println("sender private " + sender.path());
-        return msg;
     }
 }

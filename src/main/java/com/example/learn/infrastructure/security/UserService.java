@@ -1,14 +1,13 @@
 package com.example.learn.infrastructure.security;
 
 
-import com.example.learn.domain.user.IUserRepository;
+import com.example.learn.domain.api.user.IUserRepository;
 import com.example.learn.infrastructure.database.entity.UserEntity;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;

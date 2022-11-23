@@ -1,4 +1,4 @@
-package com.example.learn.domain.chatroom;
+package com.example.learn.domain.actor.chatroom;
 
 import com.example.learn.infrastructure.database.entity.ChatRoomEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

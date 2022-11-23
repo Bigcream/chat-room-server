@@ -1,4 +1,4 @@
-package com.example.learn.domain.user;
+package com.example.learn.domain.api.user;
 
 import com.example.learn.infrastructure.database.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

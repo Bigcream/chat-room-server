@@ -1,4 +1,4 @@
-package com.example.learn.domain.role;
+package com.example.learn.domain.api.role;
 
 import com.example.learn.infrastructure.database.entity.RoleEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

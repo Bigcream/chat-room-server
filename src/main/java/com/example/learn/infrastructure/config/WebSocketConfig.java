@@ -1,6 +1,6 @@
 package com.example.learn.infrastructure.config;
 
-import com.example.learn.domain.user.UserInterceptor;
+import com.example.learn.domain.api.user.UserInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;

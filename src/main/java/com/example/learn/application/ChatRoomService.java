@@ -2,8 +2,8 @@ package com.example.learn.application;
 
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
-import com.example.learn.domain.chatroom.ChatRoom;
-import com.example.learn.infrastructure.UtilityActor;
+import com.example.learn.domain.actor.chatroom.ChatRoom;
+import com.example.learn.infrastructure.utility.UtilityActor;
 import com.example.learn.infrastructure.constant.ActorName;
 import com.example.learn.infrastructure.database.dto.ChatRoomDTO;
 import com.example.learn.infrastructure.database.dto.Message;

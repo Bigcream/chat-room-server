@@ -1,4 +1,4 @@
-package com.example.learn.domain.user;
+package com.example.learn.domain.api.user;
 
 import java.util.ArrayList;
 import java.util.Map;

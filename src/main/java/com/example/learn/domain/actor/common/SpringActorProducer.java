@@ -1,4 +1,4 @@
-package com.example.learn.domain.actor;
+package com.example.learn.domain.actor.common;
 
 import akka.actor.Actor;
 import akka.actor.IndirectActorProducer;

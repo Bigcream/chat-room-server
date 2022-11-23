@@ -1,18 +1,16 @@
 package com.example.learn.application;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
-import com.example.learn.domain.chatroom.ChatRoom;
-import com.example.learn.infrastructure.UtilityActor;
+import com.example.learn.domain.actor.chatroom.ChatRoom;
+import com.example.learn.infrastructure.utility.UtilityActor;
 import com.example.learn.infrastructure.constant.ActorName;
 import com.example.learn.infrastructure.database.dto.ChatMessage;
-import com.example.learn.infrastructure.database.dto.ChatRoomDTO;
 import com.example.learn.infrastructure.database.dto.Message;
 import com.example.learn.infrastructure.database.entity.ChatRoomEntity;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 

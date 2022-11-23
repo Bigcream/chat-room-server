@@ -1,11 +1,11 @@
-package com.example.learn.domain.actor;
+package com.example.learn.domain.actor.chatroom;
 
 import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
 import akka.japi.pf.ReceiveBuilder;
 import com.example.learn.application.GreetingService;
-import com.example.learn.domain.chatroom.ChatRoom;
-import com.example.learn.domain.chatroom.IChatRoomRepository;
+import com.example.learn.domain.actor.chatroom.ChatRoom;
+import com.example.learn.domain.actor.chatroom.IChatRoomRepository;
 import com.example.learn.infrastructure.database.dto.ChatMessage;
 import com.example.learn.infrastructure.database.dto.Message;
 import com.example.learn.infrastructure.database.entity.ChatRoomEntity;
@@ -16,7 +16,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
-import java.util.Random;
 
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
