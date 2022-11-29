@@ -1,5 +1,6 @@
 package com.example.learn.user_interface;
 
+import com.example.learn.application.UserChatService;
 import com.example.learn.application.UserServiceTest;
 import com.example.learn.infrastructure.database.dto.UserDTO;
 import com.example.learn.infrastructure.database.entity.UserEntity;
@@ -7,8 +8,7 @@ import com.example.learn.infrastructure.database.entity.UserEntity;
 import com.example.learn.infrastructure.security.CustomUserDetails;
 import com.example.learn.infrastructure.security.jwt.JwtTokenProvider;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -18,13 +18,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/api/v1")
-@AllArgsConstructor
-public class HomeController {
+@RequiredArgsConstructor
+public class UserController extends BaseController {
     private final UserServiceTest userService;
+    private final UserChatService userChatService;
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider tokenProvider;
     @GetMapping(path = "/publish", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -50,6 +49,10 @@ public class HomeController {
 //        UserDTO userDTO = UserDTO.builder().username(user.getUsername()).lastName(user.getUsername()).firstName(user.getUsername()).id(1L).email("bigcream@gmail.com").build();
 //        userDTO.setPassWord("123456");
         return ResponseEntity.ok(jwt);
+    }
+    @PostMapping("/register")
+    public ResponseEntity<UserEntity> register(@RequestBody UserEntity user) throws Exception {
+        return new  ResponseEntity<>(userChatService.register(user), noCacheHeader, HttpStatus.OK);
     }
     // Api /api/random yêu cầu phải xác thực mới có thể request
     @GetMapping("/random")

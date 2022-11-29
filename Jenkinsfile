@@ -3,7 +3,7 @@ pipeline {
   agent none
 
   environment {
-    DOCKER_IMAGE = "duynh/test-job"
+    DOCKER_IMAGE = "duynh/backend"
   }
 
   stages {
@@ -19,8 +19,6 @@ pipeline {
         withCredentials([usernamePassword(credentialsId: 'docker-hub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
             bat "docker push ${DOCKER_IMAGE}:${DOCKER_TAG}"
             bat "docker push ${DOCKER_IMAGE}:latest"
-            bat "docker pull redis:latest"
-            bat "docker run -p 6379:6379 redis"
         }
 
         //clean to save disk

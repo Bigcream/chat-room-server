@@ -25,3 +25,26 @@ ENV BASE_URI "/ROOT"
 EXPOSE 8080
 
 CMD mv /usr/local/tomcat/webapps/ROOT.tmp /usr/local/tomcat/webapps${BASE_URI}.war && exec catalina.sh run
+// cau lenh hay dung devops
+docker run --name mysql --network spring-boot -e MYSQL_ROOT_PASSWORD=123456 -e MYSQL_DATABASE=learn_web -d mysql:8.0.31
+docker network create spring-boot
+docker run --network spring-boot --name backend-container -p 8080:8080 -d backend:v1.0.1
+docker run --name mysqldb1 --network spring-boot -e MYSQL_ROOT_PASSWORD=123456 -e MYSQL_DATABASE=learn_web -e MYSQL_USER=sa -e MYSQL_PASSWORD=123456 -p 3307:3306 -d mysql:8.0.31
+docker exec -it bash
+mysql -uroot -p123456
+show databases;
+docker network inspect bridge
+
+set up jenkins
+#!/usr/bin/env bash
+mkdir -p /home/jenkins/data
+cd /home/jenkins
+docker run -u 0 -v /var/run/docker.sock:/var/run/docker.sock -v $(which docker):$(which docker) -v `pwd`/data:/var/jenkins_home  -p 8085:8080 --name jenkins-server -d jenkins/jenkins:lts
+vi /etc/ssh/sshd_config
+202.92.4.207
+sudo docker run --privileged  -d --name rancher_server --restart=unless-stopped -p 80:80 -p 443:443 rancher/rancher
+//xoa het config khi tao cluster moi
+sudo rm -rf /etc/kubernetes/ /var/lib/kubelet/ /var/lib/etcd/
+docker stop $(docker ps -aq)
+docker rm $(docker ps -aq)
+docker rmi $(docker images -q)

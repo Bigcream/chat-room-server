@@ -2,10 +2,7 @@ package com.example.learn.infrastructure.database.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.redis.core.RedisHash;
 
 import javax.persistence.*;
@@ -16,16 +13,16 @@ import java.util.Set;
 @Table(name = "user")
 @Setter
 @Getter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserEntity  implements Serializable {
     private static final long serialVersionUID = -6500665823330706018L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-
-    @Column(name = "id", nullable = false)
-    private Long id;
+//    @SequenceGenerator(name = "user_id_seq", sequenceName = "user_id_seq")
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_id_seq")
+    protected Long id;
 
     @Column(name = "username")
     private String username;

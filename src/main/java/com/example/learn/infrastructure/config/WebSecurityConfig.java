@@ -3,6 +3,7 @@ package com.example.learn.infrastructure.config;
 import com.example.learn.infrastructure.security.UserService;
 import com.example.learn.infrastructure.security.filter.JwtAuthenticationFilter;
 import com.example.learn.infrastructure.security.jwt.JwtAuthenticationEntryPoint;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,17 +23,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @EnableWebSecurity
 @Configuration
+@RequiredArgsConstructor
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-
-    @Autowired
-    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-
-    @Autowired
-    private UserDetailsService jwtUserDetailsService;
-
-    @Autowired
-    private JwtAuthenticationFilter jwtRequestFilter;
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final UserDetailsService jwtUserDetailsService;
+    private final JwtAuthenticationFilter jwtRequestFilter;
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -59,9 +55,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.csrf().disable().cors().and()
                 // dont authenticate this particular request
                 .authorizeRequests().antMatchers("/ws/**").permitAll().and()
-                .authorizeRequests().antMatchers("/api/v1/login").permitAll().
+                .authorizeRequests().antMatchers("/api/v1/login").permitAll().and()
+                .authorizeRequests().antMatchers("/api/v1/register").permitAll()
                 // all other requests need to be authenticated
-                        anyRequest().authenticated().and().
+                .anyRequest().authenticated().and().
                 // make sure we use stateless session; session won't be used to
                 // store user's state.
                         exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
