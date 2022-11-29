@@ -48,3 +48,6 @@ sudo rm -rf /etc/kubernetes/ /var/lib/kubelet/ /var/lib/etcd/
 docker stop $(docker ps -aq)
 docker rm $(docker ps -aq)
 docker rmi $(docker images -q)
+
+//config slack noti
+https://my.slack.com/services/new/jenkins-ci

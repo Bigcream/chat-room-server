@@ -27,8 +27,15 @@ pipeline {
         sh "docker image rm ${DOCKER_IMAGE}:latest"
       }
     }
+    stage("slackSend") {
+      environment {
+        DOCKER_TAG="${GIT_BRANCH.tokenize('/').pop()}-${GIT_COMMIT.substring(0,7)}"
+      }
+      steps {
+        slackSend channel: 'image-docker-springboot', message: 'docker image: ${DOCKER_IMAGE}:${DOCKER_TAG}'
+      }
+    }
   }
-
   post {
     success {
       echo "SUCCESSFUL"
