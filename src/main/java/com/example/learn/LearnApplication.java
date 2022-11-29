@@ -10,7 +10,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @SpringBootApplication
 @EnableCaching
-@EntityScan("com.example.learn.infrastructure.database.entity")
 public class LearnApplication {
 
 	public static void main(String[] args) {
