@@ -33,7 +33,7 @@ pipeline {
         DOCKER_TAG="${GIT_BRANCH.tokenize('/').pop()}-${GIT_COMMIT.substring(0,7)}"
       }
       steps {
-        slackSend channel: 'image-docker-springboot', message: 'docker image: ${DOCKER_IMAGE}:${DOCKER_TAG}'
+        slackSend channel: 'image-docker-springboot', message: "docker image: ${DOCKER_IMAGE}:${DOCKER_TAG}"
       }
     }
   }
